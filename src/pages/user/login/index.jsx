@@ -1,5 +1,4 @@
-
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Form, Icon, Input, Button } from 'antd'
 import router from 'umi/router'
 import styles from './style.less'
@@ -7,12 +6,12 @@ import { connect } from 'dva'
 import userApi from '@/services/user'
 
 /**
- * 表单复杂后代码实在太丑，稍微美化一下
+ * 如果表单复杂后代码实在太丑，稍微美化一下
  */
 
 @connect(({ user }) => ({ currentUser: user.currentUser }))
 
-class view extends Component {
+class view extends PureComponent {
 
   handleSubmit = async (e) => {
     e.preventDefault()
@@ -34,7 +33,10 @@ class view extends Component {
 
   render() {
 
-    const handleGetFieldDecorator = (valueName, parameters) => {//生成表单元素
+    const handleGetFieldDecorator = (valueName, parameters) => {
+      /**
+       * 生成表单元素
+       */
       const { getFieldDecorator } = this.props.form
       return getFieldDecorator(valueName, { ...parameters })
     }
@@ -51,7 +53,7 @@ class view extends Component {
         }
       }
       const children = <Input size="large" prefix={ <Icon type="user" /> } placeholder={ formProps.placeholder } />
-      return handleGetFieldDecorator('username', formProps.formParams)(children)
+      return handleGetFieldDecorator(formProps.name, formProps.formParams)(children)
     }
 
     const password = () => {
@@ -66,7 +68,7 @@ class view extends Component {
         }
       }
       const children = <Input size="large" type="password" prefix={ <Icon type="lock" /> } placeholder={ formProps.placeholder } />
-      return handleGetFieldDecorator('password', formProps.formParams)(children)
+      return handleGetFieldDecorator(formProps.name, formProps.formParams)(children)
     }
 
     return (
